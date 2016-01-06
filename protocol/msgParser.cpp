@@ -25,6 +25,6 @@ msg::Messages getMessageType (std::string s) {
 }
 
 std::string getMessage(std::string s) {
-    return s.substr(s.find(" "), s.length());
+    return s.substr(s.find(" ") + 1, s.length());
 }
 

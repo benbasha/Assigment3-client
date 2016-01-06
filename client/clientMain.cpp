@@ -25,8 +25,10 @@ int main (int argc, char *argv[]) {
 
     boost::thread serverListener(listenToServer, connectionHandler);
 
-    stdinListener.join();
     serverListener.join();
+
+    stdinListener.join();
+
 
     return 0;
 }

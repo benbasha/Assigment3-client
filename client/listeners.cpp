@@ -5,8 +5,12 @@
 #include <string>
 #include "listeners.h"
 
+bool shouldIQuit (std::string s);
+
+bool terminate = false;
+
 void listenToInput (ConnectionHandler *connectionHandler) {
-    while (1) {
+    while (!terminate) {
         const short bufsize = 1024;
         int len;
         char buf[bufsize];
@@ -14,18 +18,19 @@ void listenToInput (ConnectionHandler *connectionHandler) {
         std::string line(buf);
         len = line.length();
         if (!connectionHandler->sendLine(line)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            std::cout << "Disconnected. Exit12427ing...\n" << std::endl;
+            terminate = true;
             break;
         }
 
 
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
-        std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
+        //std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
     }
 }
 
 void listenToServer (ConnectionHandler *connectionHandler) {
-    while (1) {
+    while (!terminate) {
         std::string answer;
         int len;
 
@@ -33,6 +38,7 @@ void listenToServer (ConnectionHandler *connectionHandler) {
         // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
         if (!connectionHandler->getLine(answer)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
+            terminate = true;
             break;
         }
 
@@ -43,12 +49,42 @@ void listenToServer (ConnectionHandler *connectionHandler) {
 
         msg::Messages msgType = getMessageType(answer);
 
+        std::string ans;
+
         switch (msgType) {
             case msg::ASKTXT :
-            std::cout << "Recived new question: " << getMessage(answer) << " use TXTRESP <msg> to respond";
+                std::cout << "Recived new question: " << getMessage(answer) << " use TXTRESP <msg> to respond with your answer" << std::endl;
+                break;
+            case msg::ASKCHOICES :
+                std::cout << "Please choose an answer: " << getMessage(answer) << " use SELECTRESP <answer number> to respond" << std::endl;
+                break;
+            case msg::SYSMSG : {
+                std::string ans = getMessage(answer);
+                std::cout << "System msg recived: " << ans << std::endl;
+                if (shouldIQuit(ans)) {
+                    treminate = true;
+                    return;
+                }
+                break;
+            }
+            case msg::GAMEMSG :
+                std::cout << getMessage(answer) << std::endl;
+                break;
+            case msg::USRMSG :
+                std::cout << "Chat message recived: " << getMessage(answer) << " use MSG <msg> to respond" << std::endl;
+                break;
+            case msg::UNKNOWNMSG :
+                std::cout << "Unknown message recived, consider of sending a message to ask for explanation" << std::endl;
                 break;
         }
 
-        std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
+        std::cout << std::endl;
     }
+}
+
+bool shouldIQuit (std::string s) {
+    if (s.substr(0, s.find(" ")) == "QUIT" && s.substr(s.find(" ") + 1, s.length()) == "ACCEPTED")
+        return true;
+
+    return false;
 }
