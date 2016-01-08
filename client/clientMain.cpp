@@ -27,7 +27,7 @@ int main (int argc, char *argv[]) {
 
     serverListener.join();
 
-    stdinListener.join();
+    stdinListener.interrupt();
 
 
     return 0;

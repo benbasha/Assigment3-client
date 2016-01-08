@@ -62,7 +62,6 @@ void listenToServer (ConnectionHandler *connectionHandler) {
                 std::string ans = getMessage(answer);
                 std::cout << "System msg recived: " << ans << std::endl;
                 if (shouldIQuit(ans)) {
-                    treminate = true;
                     return;
                 }
                 break;
