@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.3)
 set(CMAKE_CXX_COMPILER "/usr/bin/g++-4.2")
-project(assigment1)
+project(assigment3)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(BOOST_ROOT "boost_1_57_0")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
