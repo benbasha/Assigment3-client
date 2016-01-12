@@ -1,7 +1,4 @@
 #include "connectionHandler.h"
-#include "../encoder/utf8.h"
-#include "../encoder/encoder.h"
- 
 using boost::asio::ip::tcp;
 
 using std::cin;
@@ -92,9 +89,8 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 }
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
-    Encoder encoder;
 
-	bool result=sendBytes(encoder.toBytes(frame.c_str()),frame.length());
+	bool result=sendBytes(frame.c_str(),frame.length());
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }
