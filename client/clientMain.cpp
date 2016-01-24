@@ -21,14 +21,16 @@ int main (int argc, char *argv[]) {
     }
 
 	//From here we will see the rest of the ehco client implementation:
-    boost::thread stdinListener(listenToInput, connectionHandler);
+    boost::thread stdinListener = new boost::thread(listenToInput, connectionHandler);
 
-    boost::thread serverListener(listenToServer, connectionHandler);
+    boost::thread serverListener = new boost::thread(listenToServer, connectionHandler);
 
     serverListener.join();
 
     stdinListener.interrupt();
 
+    delete stdinListener;
+    delete serverListener;
 
     return 0;
 }
