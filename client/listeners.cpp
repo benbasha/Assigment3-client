@@ -12,11 +12,10 @@ bool terminate = false;
 void listenToInput (ConnectionHandler *connectionHandler) {
     while (!terminate) {
         const short bufsize = 1024;
-        int len;
+
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        len = line.length();
         if (!connectionHandler->sendLine(line)) {
             std::cout << "Disconnected. Exit12427ing...\n" << std::endl;
             terminate = true;
