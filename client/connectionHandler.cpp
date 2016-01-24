@@ -40,7 +40,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 		if(error)
 			throw boost::system::system_error(error);
     } catch (std::exception& e) {
-        std::cerr << "last try (Error: " << e.what() << ')' << std::endl;
+        std::cerr << " (Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
@@ -57,7 +57,7 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 		if(error)
 			throw boost::system::system_error(error);
     } catch (std::exception& e) {
-        std::cerr << "is this here? (Error: " << e.what() << ')' << std::endl;
+        std::cerr << "(Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
@@ -82,7 +82,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
             frame.append(1, ch);
         }while (delimiter != ch);
     } catch (std::exception& e) {
-        std::cerr << "im here (Error: " << e.what() << ')' << std::endl;
+        std::cerr << "(Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
